@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "ef4b1e31-4778-4881-97ba-7ba9346c94f8",
+		"name": "proxy-meli",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10026976"
+	},
+	"item": [
+		{
+			"name": "/products/search",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products/search?status=active&site_id=MLA&product_identifier=0123456789",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"search"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "active"
+						},
+						{
+							"key": "site_id",
+							"value": "MLA"
+						},
+						{
+							"key": "product_identifier",
+							"value": "0123456789"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/search with token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products/search?status=active&site_id=MLA&product_identifier=0123456789",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"search"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "active"
+						},
+						{
+							"key": "site_id",
+							"value": "MLA"
+						},
+						{
+							"key": "product_identifier",
+							"value": "0123456789"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/sites/MLA/search",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/sites/MLA/search?category=MLA1055",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sites",
+						"MLA",
+						"search"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MLA1055"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/sites/MLA/search with token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-access-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/sites/MLA/search?category=MLA1055",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sites",
+						"MLA",
+						"search"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "MLA1055"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/proxy/stats /products/search",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/proxy/stats?path=/products/search&ip=0:0:0:0:0:0:0:1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"proxy",
+						"stats"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/products/search"
+						},
+						{
+							"key": "ip",
+							"value": "0:0:0:0:0:0:0:1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/proxy/stats /sites/MLA/search",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/proxy/stats?path=/sites/MLA/search&ip=0:0:0:0:0:0:0:1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"proxy",
+						"stats"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/sites/MLA/search"
+						},
+						{
+							"key": "ip",
+							"value": "0:0:0:0:0:0:0:1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/proxy/stats error params required Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/proxy/stats",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"proxy",
+						"stats"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "/sites/MLA/search",
+							"disabled": true
+						},
+						{
+							"key": "ip",
+							"value": "0:0:0:0:0:0:0:1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unknown endpoint error",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/producsssts/search?status=active&site_id=MsLA&product_identifier=012345ss6789",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"producsssts",
+						"search"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "active"
+						},
+						{
+							"key": "site_id",
+							"value": "MsLA"
+						},
+						{
+							"key": "product_identifier",
+							"value": "012345ss6789"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v3/api-docs",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{meli-token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v3/api-docs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

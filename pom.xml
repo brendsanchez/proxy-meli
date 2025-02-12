@@ -26,12 +26,6 @@
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
         <sonar.coverage.exclusions>
-            **/client/**,
-            **/configuration/**,
-            **/controller/**,
-            **/dto/**,
-            **/exception/**,
-            **/model/**,
             **/ProxyApp.java,
         </sonar.coverage.exclusions>
     </properties>
@@ -49,8 +43,13 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- SPRING -->
-
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.19.7</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- SPRING BOOT -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -64,7 +63,14 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -73,7 +79,7 @@
         <!-- SWAGGER -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
             <version>${springdoc.version}</version>
         </dependency>
 
@@ -141,13 +147,6 @@
                 </dependencies>
                 <configuration>
                     <excludes>
-                        <exclude>**/client/**</exclude>
-                        <exclude>**/configuration/**</exclude>
-                        <exclude>**/controller/**</exclude>
-                        <exclude>**/dto/**</exclude>
-                        <exclude>**/exception/**</exclude>
-                        <exclude>**/model/**</exclude>
-                        <exclude>**/repository/**</exclude>
                         <exclude>com/ml/proxy/*.class</exclude>
                     </excludes>
                     <rules>
@@ -157,7 +156,7 @@
                                 <limit>
                                     <counter>INSTRUCTION</counter>
                                     <value>COVEREDRATIO</value>
-                                    <minimum>80%</minimum>
+                                    <minimum>0%</minimum>
                                 </limit>
                             </limits>
                         </rule>

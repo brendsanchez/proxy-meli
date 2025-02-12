@@ -1,48 +1,42 @@
 package com.ml.proxy.exception;
 
-import com.ml.proxy.dto.response.ErrorResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.RestClientResponseException;
-import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerWebExchange;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class ProxyExceptionHandler {
 
-    @ExceptionHandler(RestClientResponseException.class)
-    public ResponseEntity<ErrorResponse> restClientError(RestClientResponseException ex) {
-        var errorResponse = this.errorRestClientResponse(ex);
-        log.error("ExceptionHandler restClientError: {} ", errorResponse);
-        return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
-    }
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ProblemDetail> handleException(@NotNull Throwable ex, ServerWebExchange exchange) {
+        HttpStatusCode status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String errorMessage = "Error interno en el proxy";
 
-    private ErrorResponse errorRestClientResponse(RestClientResponseException restClientResponseException) {
-        try {
-            var responseBody = restClientResponseException.getResponseBodyAsString();
-            var mapper = new ObjectMapper();
-            return mapper.readValue(responseBody, ErrorResponse.class);
-        } catch (JsonProcessingException ex) {
-            log.error("ExceptionHandler errorRestClientResponse: {}", ex.getMessage());
-            return ErrorResponse.builder()
-                    .message(restClientResponseException.getStatusText())
-                    .code(restClientResponseException.getStatusCode().value())
-                    .build();
+        if (ex instanceof ResponseStatusException ep) {
+            status = ep.getStatusCode();
+            errorMessage = ep.getReason();
+        } else {
+            log.error("ProxyExceptionHandler => internal:{}", ex.getMessage());
         }
-    }
-    
-    @ExceptionHandler(ResourceAccessException.class)
-    public ResponseEntity<ErrorResponse> resourceAccessError(ResourceAccessException ex) {
-        var errorResponse = ErrorResponse.builder()
-                .message(ex.getMessage())
-                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .build();
-        log.error("ExceptionHandler resourceAccessError: {} ", ex.getMessage());
-        return ResponseEntity.status(errorResponse.getCode()).body(errorResponse);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, errorMessage);
+        problemDetail.setTitle("Error en el Proxy");
+
+        var method = exchange.getRequest().getMethod().toString();
+        problemDetail.setProperty("method", method);
+
+        var uri = exchange.getRequest().getURI();
+        problemDetail.setInstance(uri);
+
+        log.error("ProxyExceptionHandler => problemDetail: {}", problemDetail);
+        return new ResponseEntity<>(problemDetail, status);
     }
 }
